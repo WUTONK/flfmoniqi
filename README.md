@@ -1,7 +1,3 @@
 # -
 # -
 # -
-# flfmoniqi
-# flfmoniqi
-# flfmoniqi
-# flfmoniqi

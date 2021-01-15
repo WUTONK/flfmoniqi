@@ -3,10 +3,10 @@
 //                                     欢迎进入源代码页面！━(*｀∀´*)ノ亻!                                                                                      
 //                                                                                                                       
 //                                      项目：伏拉夫模拟器                                                                                    
-//                                      版本：alpha v.0.0.10-10%                                                                            
+//                                      版本：alpha v.0.0.11                                                                            
 //                                      开发者：WUTONG                                                                             
 //                                      开始日期：2020-6-13   
-//                                      最后编辑日期：2020-11-29
+//                                      最后编辑日期：2021-1-15
 //                                      本页面功能：主页以及游戏逻辑运行                                                                              
 //                                                                                                                       
 //                                                                                                                       
@@ -51,11 +51,13 @@
 #include <wctype.h>      //别人告诉我要用
 #include <string>          //用于string转换和各种变量互相转换，存档会用到
 #include <sstream>       //用于使用stringstream字符串
-#include <fstream>
+#include <fstream>    //
 #include "windows.h"//bzd
 #include "conio.h"//用于键盘输入
 
 
+#define upspace 3
+#define leftspace 4
 
 
 
@@ -143,8 +145,8 @@ int main()//主函数
 {
 
 	//chushizhuyemian();//调用主页面函数
-	cundang();//调用存档函数
-
+	//cundang();//调用存档函数
+	zhuyemian();
 
 	return 0;
 }
@@ -727,6 +729,26 @@ ladel6://用于后续玩家选择重新起名时的GOTO跳转
 
 
 
+//此函数用于定义输出坐标@！此函数作者：bilibili  @阳光下的树叶TREEYEAH
+
+void go(int x, int y)  //光标移动函数，X表示横坐标，Y表示纵坐标。
+{
+	COORD coord;         //使用头文件自带的坐标结构
+	coord.X = (x + leftspace) * 2;            //这里将int类型值传给short,不过程序中涉及的坐标值均不会超过short范围
+	coord.Y = y + upspace;
+	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);  //获得标准输出句柄
+	SetConsoleCursorPosition(a, coord);         //以标准输出的句柄为参数设置控制台光标坐标
+}
+
+void zhuyemian() {
+
+	go(0,0 ); cout<<"订阅数:"<<dingyueshu;
+	
+
+
+
+
+}
 
 
 
