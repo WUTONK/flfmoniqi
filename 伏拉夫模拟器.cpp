@@ -3,7 +3,7 @@
 //                                     欢迎进入源代码页面！━(*｀∀´*)ノ亻!                                                                                      
 //                                                                                                                       
 //                                      项目：伏拉夫模拟器                                                                                    
-//                                      版本：alpha v.0.0.11                                                                            
+//                                      版本：alpha v.0.0.12                                                                            
 //                                      开发者：WUTONG                                                                             
 //                                      开始日期：2020-6-13   
 //                                      最后编辑日期：2021-1-15
@@ -13,10 +13,10 @@
 //                                                                                                                       
 //（由于本人的低技术力，main主函数代码将基本承担一切的游戏逻辑以及变量调用操作，暂时无法使用其他.cpp文件）                                                                                
 //                                                                                                                       
-//                                                                                                                       
-//                                                                                                                       
-//                                                                                                                       
-//                                                                                                                                                                                             
+//                                                      ┌       ┐ 
+//												             ' 」'      welcome the code                                                 
+//                                                      └  ︶  ┘                                     
+//                                                                                                                                                                     
 //                                                                                                                       
 //                          ps:          此处为注释       源代码在下方     
 //                                                                                                                       
@@ -51,13 +51,13 @@
 #include <wctype.h>      //别人告诉我要用
 #include <string>          //用于string转换和各种变量互相转换，存档会用到
 #include <sstream>       //用于使用stringstream字符串
-#include <fstream>    //
+#include <fstream>    //bzd
 #include "windows.h"//bzd
-#include "conio.h"//用于键盘输入
+#include "conio.h"// 用于键盘输入
 
 
-#define upspace 3
-#define leftspace 4
+#define upspace 3//用于计算x坐标
+#define leftspace 4//用于计算y坐标
 
 
 
@@ -115,6 +115,16 @@ int youkubofang = 0;//用于保存油库总播放量/bsave15
 int anjian1;//按键检测缓存
 
 
+//这里是玩家属性
+	int gongguan;//公关指数
+	int jiakang;//甲亢
+	int jingli;//精力指数
+	int zhiliang;//视频质量指数
+	int xifen;//吸引粉丝速度
+
+	//(公关指数最大1000，甲亢最大500，精力最大10000，质量最大5000，吸引粉丝速度无限)
+
+
 char asave[1000];//用于存储基本信息
 char bsave[1000];//用于存储频道信息
 char adata[1000];//备用
@@ -129,7 +139,7 @@ char namedata[3];//为了char[]和string类型互相转换所用
 
 
 string name;//玩家游戏内姓名/save0
-string pindaoname001;//频道初始名
+string pindaoname;//频道名
 string dudangwen;//读档临时文件储存用
 string cundangwen;//存档临时文件储存用
 string cundangddx;//用来显示读档数据
@@ -143,6 +153,11 @@ stringstream cundangcd;//用于后续存档的转换存储
 int main()//主函数
 
 {
+	//这两行代码是为了规避一些可能的问题复制过来的，后续可能移除
+	CONSOLE_CURSOR_INFO cursor_info = { 1,0 };
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);//隐藏光标 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	system("color 0F");//定义输出颜色
 
 	//chushizhuyemian();//调用主页面函数
 	//cundang();//调用存档函数
@@ -153,7 +168,23 @@ int main()//主函数
 //以下是各种函数的源代码
 
 
-
+struct stechang//这是一个结构体
+{
+	string name;
+	int gongguan;
+	int jiakang;
+	int jingli;
+	int zhiliang;
+	int xifen;
+	string pic;
+}nandu[5] =
+{
+	{},
+	{"菜鸟",200,0,500,500,35,},
+	{"简单",150,0,350,350,25,},
+	{"普通",110, 0,270,270,20,},
+	{"困难",10,150,100,100,10,},
+};
 
 
 //此函数为预留位，暂且搁置~
@@ -391,7 +422,7 @@ void dusave() {
 
 }
 
-//此函数用于读档功能@！
+//此函数用于读档功能@！()
 
 void cundnag(string s)
 {
@@ -413,7 +444,7 @@ void shuxingjisuan() {
 
 }
 
-//此函数用于初始主页面@！
+//此函数用于初始主页面@！(这是早期编辑的函数，用了很多GOTO,如果可以后续会更改)
 
 void chushizhuyemian() {
 	
@@ -510,17 +541,11 @@ label2://用作选择性别时错误后返回重新选择
 		cin >> sexyn;
 
 
-
-
-
 		if (sexyn == 0)
 		{
-
-
 			cout << "按任意键到性别选择界面.................";
 			system("pause");//用于让玩家输入任意键后继续
 			goto label2;
-
 		}
 
 	}
@@ -528,27 +553,21 @@ label2://用作选择性别时错误后返回重新选择
 
 	if (sex == 0)
 	{
-
 		cout << "您的性别为男，是否正确？" << endl << endl;
 		cout << "0.不是                     1.是" << endl << endl << endl;
 		cin >> sexyn2;
-
 	}
 
 	if (sexyn2 == 0)
 	{
-
-
-		cout << "按任意键跳转到性别选择界面.................";
+		cout << "按任意键跳转到性别选择界面";
 		system("pause");//用于让玩家输入任意键后继续
 		goto label2;
-
 	}
 
+	//出生属性选择
 
-	//游戏正式开始
-
-label3://
+label3://用于玩家返回选择出生
 
 	system("cls");//清屏
 
@@ -563,9 +582,9 @@ label3://
 
 	if (homemoneyyn != 1)
 	{
-
+		cout << "按任意键跳转到出生选择界面";
+		system("pause");//用于让玩家输入任意键后继续
 		goto label3;
-
 	}
 
 label4://用于后续国籍重新输入时的跳转
@@ -584,18 +603,14 @@ label4://用于后续国籍重新输入时的跳转
 
 	if (nationalityyn != 1)
 	{
-
 		goto label4;
-
 	}
 
 	system("cls");//清屏
 
 
-
-
 	cout << endl << endl << endl << endl << endl << endl;//用于将字顶到屏幕中部
-	cout << "欢迎开始游戏，在本游戏里，你将扮演伏拉夫，你的工作就是在自媒体平台上恰烂钱,并想方设" << endl;
+	cout << "欢迎开始游戏，在本游戏里，你的工作就是在自媒体平台上恰烂钱,并想方设" << endl;
 	cout << "的引起人们的注意，来获得流量。" << endl << endl << endl << endl;
 	cout << "即将进入平台选择界面，是否要查看各平台介绍？" << endl << endl;
 	cout << "0.否 1.是" << endl << endl;
@@ -621,17 +636,13 @@ label4://用于后续国籍重新输入时的跳转
 
 		cout << "癌奇亿：第五大平台，用户平均素质低，对财富密码和甲亢抵御能力低，收入低，审核较宽松" << endl << endl;
 
-
 		cout << "油库：第六大平台，用户平均素质最低，对财富密码＆甲亢抵御能力最低，收入最低，审核宽松" << endl << endl;
 
-
 		cout << "介绍显示完毕，按任意键继续游戏~";
-
 
 		system("pause");//用于让玩家输入任意键后继续
 
 	}
-
 
 label5://用于后续重新选择初始视频平台的跳转
 
@@ -645,42 +656,34 @@ label5://用于后续重新选择初始视频平台的跳转
 
 	//通过玩家输入的序号判定平台
 
-	if (netvideo == 0)//
-
+	switch (netvideo)//用switch指令来逐个检测玩家选择哪个频道
 	{
+	case 0: {
 		youguanyn = 1;
+		break;
 	}
-
-	if (netvideo == 1)
-
-	{
+	case 1: {
 		dyyn = 1;
+		break;
 	}
-
-	if (netvideo == 2)
-
-	{
+	case 2: {
 		pilipiliyn = 1;
+		break;
 	}
-
-	if (netvideo == 3)
-
-	{
+	case 3: {
 		dongguayn = 1;
+		break;
 	}
-
-	if (netvideo == 4)
-
-	{
+	case 4: {
 		aiqiyiyn = 1;
+		break;
 	}
-
-	if (netvideo == 5)
-
-	{
+	case 5: {
 		youkuyn = 1;
+		break;
 	}
 
+	}
 	//询问玩家是否选择正确
 
 	cout << "您选择的平台为" << netvideo << endl;
@@ -702,11 +705,10 @@ ladel6://用于后续玩家选择重新起名时的GOTO跳转
 
 	cout << "请给你的频道起一个名字" << endl;
 	cout << "请直接输入名字，然后按回车键" << endl;
-	cout << "                                    ps:目前不支持每个频道一个名字，但是可以一个团队一个名字" << endl << endl;
-	cin >> pindaoname001;
+	cin >> pindaoname;
 	cout << "" << endl;
 
-	cout << "你的频道名是：" << pindaoname001 << "      是否确认？？" << endl << endl;
+	cout << "你的频道名是：" << pindaoname<< "      是否确认？？" << endl << endl;
 	cout << "0.否      1.是" << endl;
 	cin >> pindaonameyn;
 
@@ -717,10 +719,6 @@ ladel6://用于后续玩家选择重新起名时的GOTO跳转
 		goto ladel6;
 
 	}
-
-
-
-
 
 
 
