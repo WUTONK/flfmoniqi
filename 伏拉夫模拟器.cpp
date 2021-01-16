@@ -3,10 +3,10 @@
 //                                     欢迎进入源代码页面！━(*｀∀´*)ノ亻!                                                                                      
 //                                                                                                                       
 //                                      项目：伏拉夫模拟器                                                                                    
-//                                      版本：alpha v.0.0.12                                                                            
+//                                      版本：alpha v.0.0.13                                                                            
 //                                      开发者：WUTONG                                                                             
 //                                      开始日期：2020-6-13   
-//                                      最后编辑日期：2021-1-15
+//                                      最后编辑日期：2021-1-16
 //                                      本页面功能：主页以及游戏逻辑运行                                                                              
 //                                                                                                                       
 //                                                                                                                       
@@ -14,7 +14,7 @@
 //（由于本人的低技术力，main主函数代码将基本承担一切的游戏逻辑以及变量调用操作，暂时无法使用其他.cpp文件）                                                                                
 //                                                                                                                       
 //                                                      ┌       ┐ 
-//												             ' 」'      welcome the code                                                 
+//												             ' 」'      welcome to the code                                                 
 //                                                      └  ︶  ┘                                     
 //                                                                                                                                                                     
 //                                                                                                                       
@@ -75,7 +75,7 @@ void shuxinggenggai();//用于玩家游戏中更改属性，例如频道名，�
 void xianshishuxing();//用于显示属性
 void shuxingjisuan();//用于各种属性的计算，例如播放量，订阅数，收益
 void tuandui();//用于团队功能的实现
-
+void nandu();//难度选择页面
 
 
 
@@ -111,6 +111,7 @@ int pilipilibofang = 0;//用于保存噼哩噼哩总播放量/bsave12
 int dongguabofang = 0;//用于保存冬瓜视频总播放量/bsave13
 int aiqiyibofang = 0;//用于保存癌奇亿总播放量/bsave14
 int youkubofang = 0;//用于保存油库总播放量/bsave15
+int plnandu;//用于保存玩家难度
 
 int anjian1;//按键检测缓存
 
@@ -158,17 +159,22 @@ int main()//主函数
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);//隐藏光标 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	system("color 0F");//定义输出颜色
+	
+	//while (!kbhit())
+	//{
+		//Sleep(10);
+	//}Sleep(250);
 
 	//chushizhuyemian();//调用主页面函数
+	nandu();
+	//zhuyemian();
 	//cundang();//调用存档函数
-	zhuyemian();
-
 	return 0;
 }
 //以下是各种函数的源代码
 
 
-struct stechang//这是一个结构体
+struct swnandu//这是一个结构体
 {
 	string name;
 	int gongguan;
@@ -177,7 +183,7 @@ struct stechang//这是一个结构体
 	int zhiliang;
 	int xifen;
 	string pic;
-}nandu[5] =
+}wnandu[5] =
 {
 	{},
 	{"菜鸟",200,0,500,500,35,},
@@ -186,8 +192,19 @@ struct stechang//这是一个结构体
 	{"困难",10,150,100,100,10,},
 };
 
+//此函数用于定义输出坐标@！此函数作者：bilibili  @阳光下的树叶TREEYEAH
+
+void go(int x, int y)  //光标移动函数，X表示横坐标，Y表示纵坐标。
+{
+	COORD coord;         //使用头文件自带的坐标结构
+	coord.X = (x + leftspace) * 2;            //这里将int类型值传给short,不过程序中涉及的坐标值均不会超过short范围
+	coord.Y = y + upspace;
+	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);  //获得标准输出句柄
+	SetConsoleCursorPosition(a, coord);         //以标准输出的句柄为参数设置控制台光标坐标
+}
 
 //此函数为预留位，暂且搁置~
+
 
 void save(){
 
@@ -251,10 +268,7 @@ void cundang()
 	if (cundu == 0)
 	{
 		cunsave();
-		
-
 	
-
 		return;
 	}
 
@@ -265,18 +279,8 @@ void cundang()
 
 		dusave();
 
-
 		return;
-
 		}
-
-		
-
-
-
-	cout << "检测到数字输入异常,可能是输入错误,请重新输入..." << endl;
-
-
 
 	return;
 
@@ -727,16 +731,7 @@ ladel6://用于后续玩家选择重新起名时的GOTO跳转
 
 
 
-//此函数用于定义输出坐标@！此函数作者：bilibili  @阳光下的树叶TREEYEAH
 
-void go(int x, int y)  //光标移动函数，X表示横坐标，Y表示纵坐标。
-{
-	COORD coord;         //使用头文件自带的坐标结构
-	coord.X = (x + leftspace) * 2;            //这里将int类型值传给short,不过程序中涉及的坐标值均不会超过short范围
-	coord.Y = y + upspace;
-	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);  //获得标准输出句柄
-	SetConsoleCursorPosition(a, coord);         //以标准输出的句柄为参数设置控制台光标坐标
-}
 
 void zhuyemian() {
 
@@ -749,6 +744,78 @@ void zhuyemian() {
 }
 
 
+
+void nandu() {
+
+	system("cls");
+	system("color 0F");
+	go(0, 0);
+	printf("请选择游戏难度：");
+	go(2, 1);
+	printf("难度  公关指数  甲亢指数   精力值  视频质量  吸粉度 ");
+	for (int i = 1; i <= 4; i++)
+	{
+		go(2, 1 + i);
+		cout << wnandu[i].name;
+		go(6, 1 + i);
+		cout << wnandu[i].gongguan;
+		go(12, 1 + i);
+		cout << wnandu[i].jiakang;
+		go(16, 1 + i);
+		cout << wnandu[i].jingli;
+		go(20, 1 + i);
+		cout << wnandu[i].zhiliang;
+		go(25, 1 + i);
+		cout << wnandu[i].xifen;
+	}
+	plnandu = 1;
+	go(0, 2);
+	int key = 0;
+	while (key != 13)
+	{
+		if (_kbhit())
+		{
+			key = _getch();
+			if (key == 'w' || key == 'W')
+			{
+				go(0, 1 + plnandu);
+				printf("  ");
+				plnandu--;
+			}
+			if (key == 's' || key == 'S')
+			{
+				go(0, 1 + plnandu);
+				printf("  ");
+				plnandu++;
+			}
+			if (plnandu > 4)plnandu -= 4;
+			if (plnandu < 1)plnandu += 4;
+			go(0, 1 + plnandu);
+			printf(">>");
+		}
+	}
+	go(1, 10);
+	printf("游戏难度:");
+	switch (plnandu)//用switch指令来逐个检测玩家选择哪个难度
+	{
+	case 1: {
+		cout<<"菜鸟";
+		break;
+	}
+	case 2: {
+		cout << "简单";
+		break;
+	}
+	case 3: {
+		cout << "普通";
+		break;
+	}
+	case 4: {
+		cout << "困难";
+		break;
+		}
+	}
+}
 
 
 
